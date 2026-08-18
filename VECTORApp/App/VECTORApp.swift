@@ -4,8 +4,9 @@ import SwiftUI
 struct VECTORApp: App {
     var body: some Scene {
         WindowGroup {
-            LandingView()
-                .preferredColorScheme(.dark)
+            NavigationStack {
+                LandingView()
+            }
         }
     }
 }

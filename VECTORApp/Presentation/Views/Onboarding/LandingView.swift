@@ -2,17 +2,16 @@ import SwiftUI
 
 struct LandingView: View {
     @State private var isAnimating = false
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack {
-            // Pure black background for OLED screens (Apple standard)
-            Color.black.edgesIgnoringSafeArea(.all)
+            Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 0) {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
                         
-                        // Main Title Area
                         VStack(alignment: .center, spacing: 8) {
                             Image(systemName: "location.north.circle.fill")
                                 .resizable()
@@ -23,7 +22,7 @@ struct LandingView: View {
                             
                             Text("Welcome to")
                                 .font(.system(size: 34, weight: .bold, design: .default))
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary)
                             
                             Text("VECTOR")
                                 .font(.system(size: 34, weight: .black, design: .default))
@@ -35,48 +34,24 @@ struct LandingView: View {
                         .opacity(isAnimating ? 1 : 0)
                         .offset(y: isAnimating ? 0 : 20)
                         
-                        // Features List
                         VStack(alignment: .leading, spacing: 32) {
-                            FeatureRow(
-                                icon: "point.topleft.down.curvedto.point.bottomright.up",
-                                iconColor: .blue,
-                                title: "Predictive Routing",
-                                description: "Intelligent decisions based on predicted future traffic, not just current conditions."
-                            )
-                            
-                            FeatureRow(
-                                icon: "slider.horizontal.3",
-                                iconColor: .green,
-                                title: "Multi-Objective Optimization",
-                                description: "Balance travel time, toll costs, and CO₂ emissions tailored to your preferences."
-                            )
-                            
-                            FeatureRow(
-                                icon: "chart.bar.xaxis",
-                                iconColor: .purple,
-                                title: "Risk & Uncertainty",
-                                description: "Know the probability of reaching your destination before your deadline."
-                            )
+                            FeatureRow(icon: "point.topleft.down.curvedto.point.bottomright.up", iconColor: .blue, title: "Predictive Routing", description: "Intelligent decisions based on predicted future traffic, not just current conditions.")
+                            FeatureRow(icon: "slider.horizontal.3", iconColor: .green, title: "Multi-Objective Optimization", description: "Balance travel time, toll costs, and CO₂ emissions tailored to your preferences.")
+                            FeatureRow(icon: "chart.bar.xaxis", iconColor: .purple, title: "Risk & Uncertainty", description: "Know the probability of reaching your destination before your deadline.")
                         }
                         .padding(.horizontal, 30)
                         .opacity(isAnimating ? 1 : 0)
                         .offset(y: isAnimating ? 0 : 20)
                         
-                        // Bottom padding to ensure content isn't hidden behind the button
                         Spacer().frame(height: 120)
                     }
                 }
             }
             
-            // Bottom CTA Area (Apple's standard sticky bottom button)
             VStack {
                 Spacer()
-                
                 VStack {
-                    Button(action: {
-                        // Action to enter
-                        print("Enter System")
-                    }) {
+                    NavigationLink(destination: LoginView()) {
                         Text("Continue")
                             .font(.system(size: 17, weight: .semibold, design: .default))
                             .foregroundColor(.white)
@@ -86,13 +61,12 @@ struct LandingView: View {
                             .cornerRadius(14)
                     }
                     .padding(.horizontal, 24)
-                    .padding(.bottom, 34) // Safe area padding
+                    .padding(.bottom, 34)
                     .padding(.top, 20)
                 }
                 .background(
-                    // Material blur effect for the bottom bar
                     Rectangle()
-                        .fill(Color.black.opacity(0.8))
+                        .fill(colorScheme == .dark ? Color.black.opacity(0.8) : Color.white.opacity(0.8))
                         .background(.ultraThinMaterial)
                         .edgesIgnoringSafeArea(.bottom)
                 )
@@ -126,20 +100,13 @@ struct FeatureRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 17, weight: .semibold, design: .default))
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 
                 Text(description)
                     .font(.system(size: 15, weight: .regular, design: .default))
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
                     .lineSpacing(2)
             }
         }
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        LandingView()
-            .preferredColorScheme(.dark)
     }
 }
